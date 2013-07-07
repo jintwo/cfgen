@@ -16,6 +16,7 @@ def main():
     args = parser.parse_args()
     env = Environment(loader=FileSystemLoader(args.templates))
     config = json.loads(open(args.settings, 'r').read())
+    defaults = config.pop('defaults', {})
 
     for template_name, data in config.items():
         template = env.get_template(template_name)
@@ -28,7 +29,10 @@ def main():
         if args.profile not in profiles:
             raise Exception('Invalid profile name')
 
-        template_params = data.get('defaults', {}).copy()
+        template_params = dict(
+            defaults.items() +
+            data.get('defaults', {}).items()
+        )
         template_params.update(profiles[args.profile])
 
         output_data = template.render(**template_params)

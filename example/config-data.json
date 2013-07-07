@@ -1,4 +1,7 @@
 {
+    "defaults": {
+        "hello": "world"
+    },
     "config-template.conf": {
         "output": "config.conf",
         "defaults": {
@@ -7,7 +10,8 @@
         },
         "profiles": {
             "p1": {
-                "value1": "foo+bar"
+                "value1": "foo+bar",
+                "hello": "world?"
             },
             "p2": {
                 "expr": true
