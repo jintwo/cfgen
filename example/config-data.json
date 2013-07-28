@@ -17,6 +17,7 @@
                 "expr": true
             },
             "p3": {
+                "value1": "foo+$(USER)",
                 "value2": "bar+foo",
                 "expr": true
             }
