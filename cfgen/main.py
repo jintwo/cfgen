@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+import codecs
 import argparse
 import json
 from os import path, getenv
@@ -65,7 +66,7 @@ def main():
         template_params.update(profiles[args.profile])
         template_params = walk(template_params, lambda val: env(include(val)))
         output_data = template.render(**template_params)
-        with open(path.join(args.output, output_file_name), 'w') as output_file:
+        with codecs.open(path.join(args.output, output_file_name), 'w', 'utf8') as output_file:
             output_file.write(output_data)
 
 if __name__ == '__main__':
