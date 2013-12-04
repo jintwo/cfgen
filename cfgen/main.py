@@ -14,6 +14,8 @@ def walk(dict_, fn=lambda value: value):
     for key, value in dict_.iteritems():
         if isinstance(value, dict):
             result[key] = walk(value, fn)
+        elif isinstance(value, list):
+            result[key] = map(fn, value)
         else:
             result[key] = fn(value)
     return result
@@ -26,6 +28,17 @@ def env(value):
     if matches:
         for m in matches:
             result = result.replace(m, getenv(m[2:-1], ''))
+    return result
+
+def subst(value, environ):
+    if not isinstance(value, basestring):
+        return value
+    result = value
+    matches = re.findall(r'\$\{.*?\}', result)
+    if matches:
+        for m in matches:
+            var_name = m[2:-1]
+            result = result.replace(m, environ.get(var_name))
     return result
 
 def include(value):
@@ -64,7 +77,8 @@ def main():
             data.get('defaults', {}).items()
         )
         template_params.update(profiles[args.profile])
-        template_params = walk(template_params, lambda val: env(include(val)))
+        template_params = walk(template_params,
+                               lambda val: env(subst(include(val), template_params)))
         output_data = template.render(**template_params)
         with codecs.open(path.join(args.output, output_file_name), 'w', 'utf8') as output_file:
             output_file.write(output_data)
