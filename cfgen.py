@@ -9,6 +9,10 @@ import re
 
 from jinja2 import Environment, FileSystemLoader
 
+
+__VERSION__ = (0, 2, 8)
+
+
 def walk(dict_, fn=lambda value: value):
     result = {}
     for key, value in dict_.iteritems():
@@ -20,6 +24,7 @@ def walk(dict_, fn=lambda value: value):
             result[key] = fn(value)
     return result
 
+
 def env(value):
     if not isinstance(value, basestring):
         return value
@@ -29,6 +34,7 @@ def env(value):
         for m in matches:
             result = result.replace(m, getenv(m[2:-1], ''))
     return result
+
 
 def subst(value, environ):
     if not isinstance(value, basestring):
@@ -41,6 +47,7 @@ def subst(value, environ):
             result = result.replace(m, environ.get(var_name))
     return result
 
+
 def include(value):
     if not isinstance(value, basestring):
         return value
@@ -50,12 +57,15 @@ def include(value):
         result = json.loads(open(filename, 'r').read())
     return result
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('settings', help='Settings file')
     parser.add_argument('profile', help='Profile name')
-    parser.add_argument('-t', '--templates', help='Templates root', default='.')
-    parser.add_argument('-o', '--output', help='Output path', default='.')
+    parser.add_argument(
+        '-t', '--templates', help='Templates root', default='.')
+    parser.add_argument(
+        '-o', '--output', help='Output path', default='.')
     args = parser.parse_args()
     jinja_env = Environment(loader=FileSystemLoader(args.templates))
     config = json.loads(open(args.settings, 'r').read())
@@ -76,11 +86,14 @@ def main():
             defaults.items() +
             data.get('defaults', {}).items()
         )
+        template_params['profile'] = args.profile
         template_params.update(profiles[args.profile])
         template_params = walk(template_params,
-                               lambda val: env(subst(include(val), template_params)))
+                               lambda val: env(subst(include(val),
+                                                     template_params)))
         output_data = template.render(**template_params)
-        with codecs.open(path.join(args.output, output_file_name), 'w', 'utf8') as output_file:
+        output_file_path = path.join(args.output, output_file_name)
+        with codecs.open(output_file_path, 'w', 'utf8') as output_file:
             output_file.write(output_data)
 
 if __name__ == '__main__':

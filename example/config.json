@@ -2,8 +2,8 @@
     "defaults": {
         "hello": "world"
     },
-    "config-template.conf": {
-        "output": "config.conf",
+    "template.conf": {
+        "output": "output.conf",
         "defaults": {
             "value1": "foo",
             "value2": "bar"

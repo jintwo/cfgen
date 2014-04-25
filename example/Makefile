@@ -1,7 +1,7 @@
 GEN=`which cfgen`
 
 clean:
-	rm config.conf
+	rm -f output.conf
 
 %:
-	$(GEN) config-data.json $*
+	$(GEN) config.json $*
