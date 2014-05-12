@@ -82,12 +82,14 @@ def main():
         if args.profile not in profiles:
             raise Exception('Invalid profile name')
 
+        profile_params = profiles.get(args.profile, {})
+
         template_params = dict(
             defaults.items() +
             data.get('defaults', {}).items()
         )
         template_params['profile'] = args.profile
-        template_params.update(profiles[args.profile])
+        template_params.update(profile_params)
         template_params = walk(template_params,
                                lambda val: env(subst(include(val),
                                                      template_params)))
