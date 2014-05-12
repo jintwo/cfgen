@@ -10,9 +10,6 @@ import re
 from jinja2 import Environment, FileSystemLoader
 
 
-__VERSION__ = (0, 2, 9)
-
-
 def walk(dict_, fn=lambda value: value):
     result = {}
     for key, value in dict_.iteritems():
