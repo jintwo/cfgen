@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-import codecs
 import argparse
+import codecs
 import json
 from os import path, getenv
 import re
+import warnings
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -77,7 +78,8 @@ def main():
 
         profiles = data.get('profiles', {}).copy()
         if args.profile not in profiles:
-            raise Exception('Invalid profile name')
+            warnings.warn('Profile <{}> not found for <{}>'.format(
+                args.profile, template_name))
 
         profile_params = profiles.get(args.profile, {})
 
