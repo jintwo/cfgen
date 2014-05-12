@@ -74,7 +74,7 @@ def main():
     for template_name, data in config.items():
         template = jinja_env.get_template(template_name)
 
-        output_file_name = data.get('output')
+        output_file_name = data.get('output', template_name)
         if not output_file_name:
             raise Exception('Invalid output file name.')
 
