@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-from setuptools import setup
+from setuptools import setup, find_packages
 
-__VERSION__ = (0, 2, 9)
+__VERSION__ = (0, 3, 0)
 
 setup(
     name='CFGen',
@@ -10,10 +10,13 @@ setup(
     version='.'.join(map(str, __VERSION__)),
     url='http://github.com/jintwo/cfgen',
     install_requires=['Jinja2>=2.6'],
-    py_modules=['cfgen'],
+    extras_require={
+        'yaml_parser': ['PyYAML>=3.11']
+    },
+    packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'cfgen = cfgen:main'
+            'cfgen = cfgen.cli:main'
         ]
     }
 )

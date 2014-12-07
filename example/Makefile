@@ -3,5 +3,8 @@ GEN=`which cfgen`
 clean:
 	rm -f output.conf
 
-%:
-	$(GEN) config.json $*
+%.json:
+	$(GEN) --parser json config.json $*
+
+%.yaml:
+	$(GEN) --parser yaml config.yaml $*

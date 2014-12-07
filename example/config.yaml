@@ -1,0 +1,17 @@
+defaults:
+  hello: world
+template.conf:
+  output: output.conf
+  defaults:
+    value1: foo
+    value2: bar
+  profiles:
+    p1:
+      value1: foo+bar
+      hello: world?
+    p2:
+      expr: true
+    p3:
+      value1: foo+$(USER)
+      value2: bar+foo
+      expr: true
