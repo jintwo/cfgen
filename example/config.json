@@ -4,7 +4,7 @@
     },
     "templates": {
         "template.conf": {
-            "output": "output.conf",
+            "output": "$(USER)_output.conf",
             "profiles": {
                 "_": {"value1": "foo", "value2": "bar"},
                 "p1": {"value1": "foo+bar", "hello": "world?"},
