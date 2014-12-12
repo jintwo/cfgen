@@ -7,21 +7,21 @@ CFGen
 
 ```json
 {
-    "profiles": {
+  "profiles": {
+    "_": {},
+      "PROFILENAME_1": {},
+      "PROFILENAME_N": {}
+  },
+  "templates": {
+    "TEMPLATE_FILENAME": {
+      "output": "OUTPUT_FILENAME",
+      "profiles": {
         "_": {},
         "PROFILENAME_1": {},
         "PROFILENAME_N": {}
-    },
-    "templates": {
-        "TEMPLATE_FILENAME": {
-            "output": "OUTPUT_FILENAME",
-            "profiles": {
-                "_": {},
-                "PROFILENAME_1": {},
-                "PROFILENAME_N": {}
-            }
-        }
+      }
     }
+  }
 }
 ```
 
@@ -29,15 +29,15 @@ CFGen
 
 ```yaml
 profiles:
-    _: {}
-    PROFILENAME_1: {}
+  _: {}
+  PROFILENAME_1: {}
 templates:
-    TEMPLATE_FILENAME:
-        output: OUTPUT_FILENAME
-        profiles:
-            _: {}
-            PROFILENAME_1: {},
-            PROFILENAME_N: {}
+  TEMPLATE_FILENAME:
+    output: OUTPUT_FILENAME
+    profiles:
+      _: {}
+      PROFILENAME_1: {},
+      PROFILENAME_N: {}
 ```
 
 #### Value types
