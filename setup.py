@@ -12,7 +12,7 @@ setup(
     url='http://github.com/jintwo/cfgen',
     install_requires=[
         'Jinja2>=2.6',
-        'pyrsistent>=2.6.3'
+        'pyrsistent>=0.6.3'
     ],
     extras_require={
         'yaml_parser': ['PyYAML>=3.11']
