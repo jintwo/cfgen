@@ -8,16 +8,16 @@ CFGen
 ```json
 {
     "profiles": {
-        "_": {}, // common declarations
-        "PROFILENAME_1": {}, // profile specific declarations
+        "_": {}, /* common declarations */
+        "PROFILENAME_1": {}, /* profile specific declarations */
         "PROFILENAME_N": {}
     },
     "templates": {
         "TEMPLATE_FILENAME": {
             "output": "OUTPUT_FILENAME",
             "profiles": {
-                "_": {}, // common template declarations
-                "PROFILENAME_1": {}, // profile specific template declarations
+                "_": {}, /* common template declarations */
+                "PROFILENAME_1": {}, /* profile specific template declarations */
                 "PROFILENAME_N": {}
             }
         }
