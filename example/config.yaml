@@ -1,17 +1,10 @@
-defaults:
-  hello: world
-template.conf:
-  output: output.conf
-  defaults:
-    value1: foo
-    value2: bar
-  profiles:
-    p1:
-      value1: foo+bar
-      hello: world?
-    p2:
-      expr: true
-    p3:
-      value1: foo+$(USER)
-      value2: bar+foo
-      expr: true
+profiles:
+  _: {hello: world}
+templates:
+  template.conf:
+    output: output.conf
+    profiles:
+      _: {value1: foo, value2: bar}
+      p1: {value1: foo+bar, hello: "world?"}
+      p2: {expr: true}
+      p3: {value1: foo+$(USER), value2: bar+foo, expr: true}

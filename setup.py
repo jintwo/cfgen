@@ -10,7 +10,10 @@ setup(
     author_email='qulert@gmail.com',
     version=cfgen.__version__,
     url='http://github.com/jintwo/cfgen',
-    install_requires=['Jinja2>=2.6'],
+    install_requires=[
+        'Jinja2>=2.6',
+        'pyrsistent>=2.6.3'
+    ],
     extras_require={
         'yaml_parser': ['PyYAML>=3.11']
     },

@@ -6,6 +6,7 @@ import codecs
 import warnings
 from os import path
 
+from pyrsistent import pmap
 
 from .utils import walk, env, subst
 from .renderer import get_renderer
@@ -50,35 +51,39 @@ def _render(renderer, template_name, data):
         walk(data, lambda val: env(subst(val, data))))
 
 
-def _get_base_params(defaults, data):
-    base_params = defaults.copy()
-    base_params.update(data.get('defaults', {}))
-    return base_params
+def _get_params(profiles_dict, profile_name):
+    return pmap().update(profiles_dict.get('_', {}))\
+                 .update(profiles_dict.get(profile_name, {}))
 
 
 def main():
     args = _create_arg_parser().parse_args()
     config = _parse_config(args.parser, args.settings)
     renderer = _prepare_renderer(args.renderer, args.templates)
-    defaults = config.pop('defaults', {})
 
-    for template_name, data in config.items():
+    profiles = pmap(config.get('profiles', {}))
+    templates = pmap(config.get('templates', {}))
+
+    for template_name, data in templates.items():
         output_filename = data.get('output', template_name)
         if not output_filename:
             raise Exception('Invalid output file name.')
 
-        profiles = data.get('profiles', {})
-        if args.profile not in profiles:
+        template_profiles = data.get('profiles', {})
+
+        if (
+            args.profile not in profiles and
+            args.profile not in template_profiles
+        ):
             warnings.warn(
                 'Profile <{}> not found for <{}>'.format(
                     args.profile, template_name))
 
-        profile_data = profiles.get(args.profile, {})
-        template_params = _get_base_params(defaults, data)
-        template_params['profile'] = args.profile
-        template_params.update(profile_data)
+        params = pmap().update(_get_params(profiles, args.profile))\
+                       .update(_get_params(template_profiles, args.profile))\
+                       .update({'profile': args.profile})
 
-        output_data = _render(renderer, template_name, template_params)
+        output_data = _render(renderer, template_name, params)
         output_path = path.join(args.output, output_filename)
         with codecs.open(output_path, 'w', 'utf8') as output_file:
             output_file.write(output_data)
