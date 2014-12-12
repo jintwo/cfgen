@@ -18,15 +18,17 @@ def _create_arg_parser():
     parser.add_argument('settings', help='Settings file.')
     parser.add_argument('profile', help='Profile name.')
     parser.add_argument(
-        '-t', '--templates', help='Templates root.', default='.')
+        '-t', '--templates', help='Templates dir.', default='templates')
     parser.add_argument(
-        '-o', '--output', help='Output path.', default='.')
+        '-o', '--output', help='Output dir.', default='output')
     parser.add_argument(
+        '-p',
         '--parser',
         help='Config parser type.',
         default='json',
         choices=['json', 'yaml'])
     parser.add_argument(
+        '-r',
         '--renderer',
         help='Template renderer type.',
         default='jinja2',
