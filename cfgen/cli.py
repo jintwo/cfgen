@@ -47,10 +47,16 @@ def _prepare_renderer(renderer_type, templates_path):
     return renderer_cls(templates_path)
 
 
-def _render(renderer, template_name, data):
-    return renderer.render_template(
-        template_name,
-        walk(data, lambda val: env(subst(val, data))))
+def _eval_val(val, params):
+    return env(subst(val, params))
+
+
+def _eval_params(params):
+    return walk(params, lambda val: _eval_val(val, params))
+
+
+def _render(renderer, template_name, params):
+    return renderer.render_template(template_name, _eval_params(params))
 
 
 def _get_params(profiles_dict, profile_name):
@@ -67,10 +73,6 @@ def main():
     templates = pmap(config.get('templates', {}))
 
     for template_name, data in templates.items():
-        output_filename = data.get('output', template_name)
-        if not output_filename:
-            raise Exception('Invalid output file name.')
-
         template_profiles = data.get('profiles', {})
 
         if (
@@ -81,11 +83,15 @@ def main():
                 'Profile <{}> not found for <{}>'.format(
                     args.profile, template_name))
 
+        output_filename = data.get('output', template_name)
+        if not output_filename:
+            raise Exception('Invalid output file name.')
+
         params = pmap().update(_get_params(profiles, args.profile))\
                        .update(_get_params(template_profiles, args.profile))\
                        .update({'profile': args.profile})
-
         output_data = _render(renderer, template_name, params)
+        output_filename = _eval_val(output_filename, params)
         output_path = path.join(args.output, output_filename)
         with codecs.open(output_path, 'w', 'utf8') as output_file:
             output_file.write(output_data)
