@@ -3,6 +3,7 @@
 from __future__ import print_function
 import argparse
 import codecs
+from glob import glob
 import warnings
 from os import path
 
@@ -70,7 +71,16 @@ def main():
     renderer = _prepare_renderer(args.renderer, args.templates)
 
     profiles = pmap(config.get('profiles', {}))
-    templates = pmap(config.get('templates', {}))
+    templates = config.get('templates')
+    if templates is None:
+        raise Exception('Invalid templates')
+    # parse templates
+    if isinstance(templates, basestring):
+        templates = glob(path.join(args.templates, templates))
+    if isinstance(templates, list):
+        templates = pmap({t: {'output': t} for t in templates})
+    if isinstance(templates, dict):
+        templates = pmap(templates)
 
     for template_name, data in templates.items():
         template_profiles = data.get('profiles', {})

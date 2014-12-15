@@ -45,3 +45,8 @@ templates:
 - simple value `name: value`
 - environment variable `$(ENV_VAR_NAME)`
 - config value `${CONFIG_VALUE}`
+
+#### Templates
+
+- TEMPLATE_FILENAME is not neccessary.
+- "templates" can be wildcard string or list of filenames.
