@@ -76,7 +76,8 @@ def main():
         raise Exception('Invalid templates')
     # parse templates
     if isinstance(templates, basestring):
-        templates = glob(path.join(args.templates, templates))
+        templates = map(path.basename,
+                        glob(path.join(args.templates, templates)))
     if isinstance(templates, list):
         templates = pmap({t: {'output': t} for t in templates})
     if isinstance(templates, dict):
